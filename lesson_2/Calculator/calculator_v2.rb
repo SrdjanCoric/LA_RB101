@@ -7,33 +7,33 @@
 # Kernel.puts(answer)
 
 def prompt(message)
-  Kernel.puts("=> #{message}")
+  puts("=> #{message}")
 end
 
 def valid_number?(num)
-  num.to_i() != 0
+  num.to_i.to_s == num || num.to_f.to_s == num
 end
 
 def operation_to_message(op)
-  case op
-  when '1'
-    'Adding'
-  when '2'
-    'Substracting'
-  when '3'
-    'Multiplying'
-  when '4'
-    'Dividing'
-  end
+  word = case op
+         when '1'
+           'Adding'
+         when '2'
+           'Substracting'
+         when '3'
+           'Multiplying'
+         when '4'
+            'Dividing'
+         end
 end
 
 prompt("Welcome to Calculator! Please enter your name:")
 
 name = ''
 loop do
-  name = Kernel.gets().chomp()
+  name = gets.chomp
 
-  if name.empty?()
+  if name.empty?
     prompt("Mak sure to use a valid name.")
   else
     break
@@ -46,7 +46,7 @@ loop do # main loop
   number1 = ''
   loop do
     prompt("What is the first number?")
-    number1 = Kernel.gets().chomp()
+    number1 = gets().chomp()
 
     if valid_number?(number1)
       break
@@ -58,7 +58,7 @@ loop do # main loop
   number2 = ''
   loop do
     prompt("What is the second number?")
-    number2 = Kernel.gets().chomp()
+    number2 = gets().chomp()
 
     if valid_number?(number2)
       break
@@ -79,7 +79,7 @@ loop do # main loop
 
   operator = ''
   loop do
-    operator = Kernel.gets().chomp()
+    operator = gets().chomp()
 
     if ["1", "2", "3", "4"].include?(operator) # possibility to use %w(1 2 3 4)
       break
@@ -92,20 +92,20 @@ loop do # main loop
 
   result = case operator
            when '1'
-             number1.to_i() + number2.to_i()
+             number1.to_i + number2.to_i
            when '2'
-             number1.to_i() - number2.to_i()
+             number1.to_i - number2.to_i
            when '3'
-             number1.to_i() * number2.to_i()
+             number1.to_i * number2.to_i
            when '4'
-             number1.to_f() / number2.to_f()
+             number1.to_f / number2.to_f
            end
 
   prompt("The results is: #{result}")
 
   prompt("Do you want to perform another opeartion? (Y or N)")
-  answer = Kernel.gets().chomp()
-  break unless answer.downcase().start_with?('y')
+  answer = gets().chomp()
+  break unless answer.downcase == 'y'
 end
 
 prompt("Thank you for using our calculator program!")
