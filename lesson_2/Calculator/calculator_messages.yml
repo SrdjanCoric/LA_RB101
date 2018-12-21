@@ -1,0 +1,11 @@
+welcome: "Welcome to Calculator! Please enter your name:"
+name: "Make sure to use a valid name."
+
+number1: "What is the first number?"
+number2: "What is the second number?"
+
+number_error: "ERROR: Please enter a valid number"
+operator_error: "ERROR: Make sure to enter choice 1, 2, 3 or 4"
+
+another_operation: "Do you want to perform another opeartion? (Y or N)"
+goodbye: "Thank you for using our calculator program!"
