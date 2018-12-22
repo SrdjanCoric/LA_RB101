@@ -69,7 +69,7 @@ loop do # main loop
   number1 = ''
   loop do
     prompt(MESSAGES['number1'])
-    number1 = gets().chomp()
+    number1 = gets.chomp
 
     if valid_number?(number1)
       break
@@ -81,7 +81,7 @@ loop do # main loop
   number2 = ''
   loop do
     prompt(MESSAGES['number2'])
-    number2 = gets().chomp()
+    number2 = gets.chomp
 
     if valid_number?(number2)
       break
@@ -102,7 +102,7 @@ loop do # main loop
 
   operator = ''
   loop do
-    operator = gets().chomp()
+    operator = gets.chomp
 
     if ["1", "2", "3", "4"].include?(operator) # possibility to use %w(1 2 3 4)
       break
