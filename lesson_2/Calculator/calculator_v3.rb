@@ -32,14 +32,10 @@ end
 # if both numbers are integers then do the calculation accodingly.
 # if one of them is floats result will be display as float
 
-def operation_to_message(operator)
-  case operator
-  when '1' then 'Adding'
-  when '2' then 'Substracting'
-  when '3' then 'Multiplying'
-  when '4' then 'Dividing'
-  end
-end
+operation_to_message = {"1"=>"Adding",
+                        "2"=>"Substracting",
+                        "3"=>"Multiplying",
+                        "4"=> 'Dividing'  }
 
 def calculation(num1, num2, operator)
   case operator
@@ -50,20 +46,27 @@ def calculation(num1, num2, operator)
   end
 end
 
+def divide(num1, num2)
+  begin
+    answer = num1 / num2
+  rescue ZeroDivisionError => e
+    puts "Error: numbers cannot be " + e.message
+  end
+end
+
 prompt(MESSAGES['welcome'])
 
-name = ''
+your_name = ''
 loop do
-  name = gets.chomp
-
-  if name.empty?
+  your_name = gets.chomp
+  if /[0-9]/.match(your_name.to_s) || /[\s]/.match(your_name.to_s) || your_name.empty?
     prompt(MESSAGES['name'])
   else
     break
   end
 end
 
-prompt("Hello #{name}")
+prompt("Hello #{your_name}")
 
 loop do # main loop
   number1 = ''
@@ -111,7 +114,7 @@ loop do # main loop
     end
   end
 
-  prompt("#{operation_to_message(operator)} the two numbers...")
+  prompt("#{operation_to_message[operator]} the two numbers...")
 
   if number_input?(number1, number2)
     number1 = number1.to_i
@@ -121,13 +124,28 @@ loop do # main loop
     number2 = number2.to_f
   end
 
-  result = calculation(number1, number2, operator)
+  result = if operator == '4' && number2 == 0
+            divide(number1, number2)
+           else
+            calculation(number1, number2, operator)
+           end
 
   prompt("The results is: #{result}")
 
   prompt(MESSAGES['another_operation'])
-  answer = gets().chomp()
-  break unless answer.downcase == 'y'
+  answer = gets.chomp
+
+    loop do
+      if answer.downcase == 'y'
+        break
+      elsif answer.downcase == 'n'
+        exit
+      else
+        prompt("ERROR: Please put an appropriate answer (Y or N)")
+        prompt(MESSAGES['another_operation'])
+        answer = gets.chomp
+      end
+    end
 end
 
 prompt(MESSAGES['goodbye'])

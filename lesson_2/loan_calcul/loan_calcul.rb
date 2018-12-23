@@ -37,7 +37,7 @@ prompt(welcome_prompt)
 your_name = ''
 loop do
   your_name = gets.chomp.strip
-  if /[0-9]/.match(your_name.to_s) || /[\s]/.match(your_name.to_s)
+  if /[0-9]/.match(your_name.to_s) || /[\s]/.match(your_name.to_s) || name.empty?
     prompt(MESSAGES['invalid_name'])
   else
     prompt("Hello #{your_name}")
