@@ -37,7 +37,7 @@ prompt(welcome_prompt)
 your_name = ''
 loop do
   your_name = gets.chomp.strip
-  if /[0-9]/.match(your_name.to_s) || /[\s]/.match(your_name.to_s) || name.empty?
+  if /[0-9]/.match(your_name.to_s) || /[\s]/.match(your_name.to_s) || your_name.empty?
     prompt(MESSAGES['invalid_name'])
   else
     prompt("Hello #{your_name}")
@@ -92,7 +92,18 @@ loop do
 
   prompt(MESSAGES['retry'])
   answer = gets.chomp.downcase
-  break if answer == 'n'
-end
+
+  loop do
+      if answer.downcase == 'y'
+        break
+      elsif answer.downcase == 'n'
+        exit
+      else
+        prompt("ERROR: Please put an appropriate answer (Y or N)")
+        prompt(MESSAGES['retry'])
+        answer = gets.chomp.downcase
+      end
+    end
+  end
 
 prompt("Thank you #{your_name} for using our loan calculator")
