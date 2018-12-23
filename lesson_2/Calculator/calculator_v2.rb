@@ -26,9 +26,9 @@ def valid_number?(num)
 end
 
 def number_input?(num1, num2)
-  integer?(num1) && integer?(num2) 
+  integer?(num1) && integer?(num2)
 end
-# This method will allow to make choice toward the user input. 
+# This method will allow to make choice toward the user input.
 # if both numbers are integers then do the calculation accodingly.
 # if one of them is floats result will be display as float
 
