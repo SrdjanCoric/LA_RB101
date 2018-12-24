@@ -1,13 +1,13 @@
-invalid_name: "Please enter a proper name" 
+invalid_name: "Please enter a valid name"
 
 loan: "Please enter the loan_amount"
-loan_error: "ERROR: Please enter a valid value which should be an integer"
+loan_error: "ERROR: Please enter a valid amount which should be an integer"
 
 apr: "Please enter the Annual Percentage Rate"
 apr_example: "For example if your rate is 3%, enter 3"
 apr_error: "ERROR: Please enter a proper value as stated in our example"
 
 duration: "Now enter the duration of your loan in years"
-duration_error: "ERROR: Please enter a proper value"
+duration_error: "ERROR: Please enter a proper value, could be an integer or a float"
 
 retry: "Would you like to perform an additional calculation? (Y or N)"

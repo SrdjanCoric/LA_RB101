@@ -1,7 +1,5 @@
 # Loan calculator.rb
 # Abbreviation: apr => Annual Percentage rate
-# Abbreviation: l_d_y_i? => loan_duration_year_integer?
-# Abbreviation: l_d_y_f? => loan_duration_year_float?
 
 require 'yaml'
 MESSAGES = YAML.load_file('loan_calcul_messages.yml')
@@ -10,37 +8,37 @@ def prompt(message)
   puts "=> #{message}"
 end
 
-def loan_amount?(num)
-  num.to_i.to_s == num && num.to_i > 0
+def loan_amount?(value)
+  value.to_i.to_s == value && value.to_i > 0
 end
 
-def valid_apr?(num)
-  num.to_i.to_s == num || num.to_f.to_s == num
+def valid_apr?(value)
+  value.to_i.to_s == value || value.to_f.to_s == value
 end
 
-def l_d_y_i?(num)
-  num.to_i.to_s == num
+def duration_integer?(number_of_year)
+  number_of_year.to_i.to_s == number_of_year
 end
 
-def l_d_y_f?(num)
-  num.to_f.to_s == num
+def duration_float?(number_of_year)
+  number_of_year.to_f.to_s == number_of_year
 end
 
 welcome_prompt = <<~MSG
   Welcome to our loan calculator.
      You will be guided step-wise through the process.
-     But first, please enter your name.
+     Firstly, please enter your name.
 MSG
 
 prompt(welcome_prompt)
 
-your_name = ''
+name = ''
 loop do
-  your_name = gets.chomp.strip
-  if /[0-9]/.match(your_name.to_s) || /[\s]/.match(your_name.to_s) || your_name.empty?
+  name = gets.chomp.strip
+  if /[0-9]/.match(name.to_s) || /[\s]/.match(name.to_s) || name.empty?
     prompt(MESSAGES['invalid_name'])
   else
-    prompt("Hello #{your_name}")
+    prompt("Hello #{name}")
     break
   end
 end
@@ -70,13 +68,13 @@ loop do
   loan_duration = ''
   loop do
     loan_duration = gets.chomp
-    break if l_d_y_i?(loan_duration) || l_d_y_f?(loan_duration)
+    break if duration_integer?(loan_duration) || duration_float?(loan_duration)
     prompt(MESSAGES['duration_error'])
   end
 
   monthly_interest_rate = (apr.to_f / 100) / 12
 
-  loan_duration = if l_d_y_i?(loan_duration)
+  loan_duration = if duration_integer?(loan_duration)
                     loan_duration.to_i * 12
                   else
                     loan_duration.to_f.round(1) * 12
@@ -94,16 +92,15 @@ loop do
   answer = gets.chomp.downcase
 
   loop do
-      if answer.downcase == 'y'
-        break
-      elsif answer.downcase == 'n'
-        exit
-      else
-        prompt("ERROR: Please put an appropriate answer (Y or N)")
-        prompt(MESSAGES['retry'])
-        answer = gets.chomp.downcase
-      end
+    if answer.downcase == 'y'
+      break
+    elsif answer.downcase == 'n'
+      prompt("Thank you #{name} for using our loan calculator")
+      exit
+    else
+      prompt("ERROR: Please put an appropriate answer (Y or N)")
+      prompt(MESSAGES['retry'])
+      answer = gets.chomp.downcase
     end
   end
-
-prompt("Thank you #{your_name} for using our loan calculator")
+end
