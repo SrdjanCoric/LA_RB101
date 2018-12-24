@@ -32,10 +32,8 @@ end
 # if both numbers are integers then do the calculation accodingly.
 # if one of them is floats result will be display as float
 
-operation_to_message = {"1"=>"Adding",
-                        "2"=>"Substracting",
-                        "3"=>"Multiplying",
-                        "4"=> 'Dividing'  }
+operation_to_message = { "1" => 'Adding', "2" => 'Substracting',
+                         "3" => 'Multiplying', "4" => 'Dividing' }
 
 def calculation(num1, num2, operator)
   case operator
@@ -47,26 +45,24 @@ def calculation(num1, num2, operator)
 end
 
 def divide(num1, num2)
-  begin
-    answer = num1 / num2
-  rescue ZeroDivisionError => e
-    puts "Error: numbers cannot be " + e.message
-  end
+  num1 / num2
+rescue ZeroDivisionError => e
+  puts "Error: numbers cannot be " + e.message
 end
 
 prompt(MESSAGES['welcome'])
 
-your_name = ''
+name = ''
 loop do
-  your_name = gets.chomp
-  if /[0-9]/.match(your_name.to_s) || /[\s]/.match(your_name.to_s) || your_name.empty?
+  name = gets.chomp
+  if /[0-9]/.match(name.to_s) || /[\s]/.match(name.to_s) || name.empty?
     prompt(MESSAGES['name'])
   else
     break
   end
 end
 
-prompt("Hello #{your_name}")
+prompt("Hello #{name}")
 
 loop do # main loop
   number1 = ''
@@ -125,9 +121,9 @@ loop do # main loop
   end
 
   result = if operator == '4' && number2 == 0
-            divide(number1, number2)
+             divide(number1, number2)
            else
-            calculation(number1, number2, operator)
+             calculation(number1, number2, operator)
            end
 
   prompt("The results is: #{result}")
@@ -135,17 +131,17 @@ loop do # main loop
   prompt(MESSAGES['another_operation'])
   answer = gets.chomp
 
-    loop do
-      if answer.downcase == 'y'
-        break
-      elsif answer.downcase == 'n'
-        exit
-      else
-        prompt("ERROR: Please put an appropriate answer (Y or N)")
-        prompt(MESSAGES['another_operation'])
-        answer = gets.chomp
-      end
+  loop do
+    if answer.downcase == 'y'
+      break
+    elsif answer.downcase == 'n'
+      exit
+    else
+      prompt("ERROR: Please put an appropriate answer (Y or N)")
+      prompt(MESSAGES['another_operation'])
+      answer = gets.chomp
     end
+  end
 end
 
 prompt(MESSAGES['goodbye'])
