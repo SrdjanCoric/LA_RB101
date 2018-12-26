@@ -8,7 +8,11 @@ def prompt(message)
   puts "=> #{message}"
 end
 
-def loan_amount?(value)
+def invalid_name?(input)
+  /[0-9]/.match(input) || /[\s]/.match(input) || input.empty?
+end
+
+def valid_loan_amount?(value)
   value.to_i.to_s == value && value.to_i > 0
 end
 
@@ -17,11 +21,11 @@ def valid_apr?(value)
 end
 
 def duration_integer?(number_of_year)
-  number_of_year.to_i.to_s == number_of_year
+  number_of_year.to_i.to_s == number_of_year #&& number_of_year.to_i > 0
 end
 
 def duration_float?(number_of_year)
-  number_of_year.to_f.to_s == number_of_year
+  number_of_year.to_f.to_s == number_of_year #&& number_of_year.to_f > 0
 end
 
 welcome_prompt = <<~MSG
@@ -35,7 +39,7 @@ prompt(welcome_prompt)
 name = ''
 loop do
   name = gets.chomp.strip
-  if /[0-9]/.match(name.to_s) || /[\s]/.match(name.to_s) || name.empty?
+  if invalid_name?(name)
     prompt(MESSAGES['invalid_name'])
   else
     prompt("Hello #{name}")
@@ -49,7 +53,7 @@ loop do
   loan_amount = ''
   loop do
     loan_amount = gets.chomp
-    break if loan_amount?(loan_amount)
+    break if valid_loan_amount?(loan_amount)
     prompt(MESSAGES['loan_error'])
   end
 
@@ -80,9 +84,13 @@ loop do
                     loan_duration.to_f.round(1) * 12
                   end
 
-  monthly_payment = loan_amount.to_f *
-                    (monthly_interest_rate /
+  monthly_payment = if apr.to_f == 0.0
+                      loan_amount.to_f / loan_duration
+                    else
+                      loan_amount.to_f *
+                      (monthly_interest_rate /
                       (1 - (1 + monthly_interest_rate)**-loan_duration))
+                    end
 
   prompt("You interest rate by month is: #{monthly_interest_rate.round(5)}")
   prompt("The duration of your loan is: #{loan_duration.to_i} months")
