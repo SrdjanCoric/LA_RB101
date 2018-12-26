@@ -17,7 +17,8 @@ def valid_loan_amount?(value)
 end
 
 def valid_apr?(value)
-   (value.to_i.to_s == value && value.to_i >= 0) || (value.to_f >= 0 && value.to_f.to_s == value)
+  (value.to_i.to_s == value && value.to_i >= 0) ||
+    (value.to_f >= 0 && value.to_f.to_s == value)
 end
 
 def duration_integer?(number_of_year)
@@ -88,8 +89,8 @@ loop do
                       loan_amount.to_f / loan_duration
                     else
                       loan_amount.to_f *
-                      (monthly_interest_rate /
-                      (1 - (1 + monthly_interest_rate)**-loan_duration))
+                        (monthly_interest_rate /
+                          (1 - (1 + monthly_interest_rate)**-loan_duration))
                     end
 
   prompt("You interest rate by month is: #{monthly_interest_rate.round(5)}")
