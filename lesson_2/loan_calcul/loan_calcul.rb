@@ -21,11 +21,11 @@ def valid_apr?(value)
 end
 
 def duration_integer?(number_of_year)
-  number_of_year.to_i.to_s == number_of_year #&& number_of_year.to_i > 0
+  number_of_year.to_i.to_s == number_of_year && number_of_year.to_i > 0
 end
 
 def duration_float?(number_of_year)
-  number_of_year.to_f.to_s == number_of_year #&& number_of_year.to_f > 0
+  number_of_year.to_f.to_s == number_of_year && number_of_year.to_f > 0
 end
 
 welcome_prompt = <<~MSG
