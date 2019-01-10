@@ -62,7 +62,6 @@ loop do
         if answer.downcase == 'y'
           player_score = 0
           computer_score = 0
-          system('clear') || system('cls')
           break
         elsif answer.downcase == 'n'
           prompt(MSG['try_again_no'])
@@ -80,7 +79,6 @@ loop do
         if answer.downcase == 'y'
           player_score = 0
           computer_score = 0
-          system('clear') || system('cls')
           break
         elsif answer.downcase == 'n'
           prompt(MSG['try_again_no'])
@@ -108,7 +106,6 @@ loop do
     end
 
     computer_choice = VALID_CHOICE.sample
-    system('clear') || system('cls')
     player_score += 1 if player_win?(choice, computer_choice)
     computer_score += 1 if computer_win?(computer_choice, choice)
     prompt("You chose: #{choice} and computer chose: #{computer_choice}")
