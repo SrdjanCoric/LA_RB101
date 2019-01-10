@@ -1,0 +1,11 @@
+welcome_1: 'Welcome my friend.'
+welcome_2: 'Do you want to play my favorite game? "rock, paper, scissors, lizard and spock.'
+welcome_3: 'Rules are simple. Choose rock, paper, scissors, lizard or spock'
+welcome_4: 'If you are lazy just choose "r", "p", "sc", "l" or "sp" respectively'
+welcome_5: 'Now let us play and good luck!'
+
+try_again: 'Do you want to try again? (y/n)'
+try_again_no: 'Hmmm... Ok. Thank you for playing human'
+try_again_error: 'Answer "y" or "n" human. My patience has limit'
+
+valid_choice_error: 'That is not a valid choice'
