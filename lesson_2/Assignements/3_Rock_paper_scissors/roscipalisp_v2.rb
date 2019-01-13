@@ -18,12 +18,10 @@ def prompt(message)
 end
 
 def player_win?(player, computer)
-  # PLAYER_MOVES[player].include?(computer)
   MOVES[player]['beats'].include?(computer)
 end
 
 def computer_win?(computer, player)
-  # PLAYER_MOVES[computer].include?(player)
   MOVES[computer]['beats'].include?(player)
 end
 
