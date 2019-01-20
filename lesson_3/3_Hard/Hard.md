@@ -155,7 +155,7 @@ Alyssa reviewed Ben's code and says "It's a good start, but you missed a few thi
 
 Help Ben fix his code.
 
-### My solution
+### My solution (Wrong)
 
 ```ruby
 def is_an_ip_number?(word)
@@ -188,4 +188,6 @@ validation_word_from_input('11.345.134.12')
 validation_word_from_input('11.222.134.12')
 
 ```
+
+### 2nd Proposed solution
 
