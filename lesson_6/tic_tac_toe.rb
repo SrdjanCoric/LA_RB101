@@ -29,7 +29,7 @@ def invalid_name?(input)
   /[0-9]/.match(input) || /[\s]/.match(input) || input.empty?
 end
 
-# rubocop:disable Metrics/LineLength
+# rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/AbcSize
 def display_board(brd, score, name, player1, player2)
   system('clear')
@@ -52,9 +52,8 @@ def display_board(brd, score, name, player1, player2)
   puts ""
   puts "Scores: #{name}: #{score[:player]} | Computer: #{score[:computer]}"
   puts ""
-
 end
-# rubocop:enable Metrics/LineLength
+# rubocop:enable Metrics/MethodLength
 # rubocop:enable Metrics/AbcSize
 
 def initialize_board
@@ -101,7 +100,7 @@ end
 def computer_defensive_move(brd)
   ai_move = WIN_MOVES.map do |line|
     if brd.values_at(*line).count(PLAYER_MARKER) == 2
-      brd.select { |k,v| line.include?(k) && v == ' ' }.keys.first
+      brd.select { |square, marker| line.include?(square) && marker == EMPTY_MARKER }.keys.first
     end
   end
   ai_def_move = ai_move.compact
@@ -111,7 +110,7 @@ end
 def computer_offensive_move(brd)
   ai_move = WIN_MOVES.map do |line|
     if brd.values_at(*line).count(COMPUTER_MARKER) == 2
-      brd.select { |k,v| line.include?(k) && v == ' ' }.keys.first
+      brd.select { |square, marker| line.include?(square) && marker == EMPTY_MARKER }.keys.first
     end
   end
   ai_off_move = ai_move.compact
@@ -119,9 +118,9 @@ def computer_offensive_move(brd)
 end
 
 def computer_turn!(brd)
-  if computer_offensive_move(brd) != nil
+  if !computer_offensive_move(brd).nil?
     brd[computer_offensive_move(brd)] = COMPUTER_MARKER
-  elsif computer_defensive_move(brd) != nil
+  elsif !computer_defensive_move(brd).nil?
     brd[computer_defensive_move(brd)] = COMPUTER_MARKER
   elsif brd[5] == EMPTY_MARKER
     brd[5] = COMPUTER_MARKER
@@ -150,14 +149,13 @@ def check_winner(brd, name)
   nil
 end
 
-player_name = ''
-board = ''
-score = { player: 0, computer: 0 }
+# Intro
 
 puts""
 puts""
 puts "             X0X --- TIC TAC TOE Game --- 0X0"
 puts "**********************************************************************"
+puts""
 puts "  Welcome and thank you for playing TIC-TAC-TOE. Rules are simple. "
 puts "  You are will play with the crossed (X). I will play with the cir-"
 puts "  cles (O). The first one able to align three of his signs will win"
@@ -165,6 +163,12 @@ puts "  the match. However to be a true winner, we need to win 5 matches!"
 puts "  We will randomly start the game. Indeed as I cannot throw a coin,"
 puts "  the algorithm will decide ^_^ ! Enjoy the game."
 puts""
+
+# Initialisation
+
+player_name = ''
+board = ''
+score = { player: 0, computer: 0 }
 
 loop do
   prompt('Please enter your name')
@@ -183,6 +187,8 @@ loop do
   second_player = second_player[0]
   board = initialize_board
   display_board(board, score, player_name, first_player, second_player)
+
+  # Main Game Loop
 
   loop do
     if first_player == player_name
@@ -232,7 +238,7 @@ loop do
       break
     elsif answer == 'n' || answer == 'no'
       system('clear')
-      prompt('Bye bye...LOOSER!')
+      prompt('Bye bye, thank you for playing!')
       exit
     else
       system('clear')
