@@ -12,9 +12,14 @@ COMPUTER_LOST_MESSAGES = ["HOW DID YOU..? What a stupid game!",
                           "NANI!!!", "Impossible! You cheat!",
                           "Let's stop playing and YOU..!
                           Go working on LaunchSchool!"]
-WIN_MOVES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] +  # Horizontal
-            [[1, 4, 7], [2, 5, 8], [3, 6, 9]] +  # Vertical
-            [[1, 5, 9], [3, 5, 7]]               # Diagonal
+WIN_MOVES = [[1, 2, 3], # Horizontal
+             [4, 5, 6],
+             [7, 8, 9],
+             [1, 4, 7], # Vertical
+             [2, 5, 8],
+             [3, 6, 9],
+             [1, 5, 9], # Diagonal
+             [3, 5, 7]]
 
 def prompt(string)
   puts "=> #{string}"
@@ -26,16 +31,28 @@ end
 
 # rubocop:disable Metrics/LineLength
 # rubocop:disable Metrics/AbcSize
-def display_board(brd, score, name)
+def display_board(brd, score, name, player1, player2)
   system('clear')
   puts "***** TIC TAC TOE Playing Board *****"
   puts ""
-  puts "    #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}" + "    |     Scores"
-  puts "  -----+-----+-----" + "  |"
-  puts "    #{brd[4]}  |  #{brd[5]}  |  #{brd[6]}" + "    | #{name}: #{score[:player]}"
-  puts "  -----+-----+-----" + "  | Computer: #{score[:computer]}"
-  puts "    #{brd[7]}  |  #{brd[8]}  |  #{brd[9]}" + "    |"
+  puts "   First player is   --> #{player1} "
+  puts "   Second player is  --> #{player2} "
   puts ""
+  puts "           |     |"
+  puts "        #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}"
+  puts "           |     |"
+  puts "      -----+-----+-----"
+  puts "           |     |"
+  puts "        #{brd[4]}  |  #{brd[5]}  |  #{brd[6]}"
+  puts "           |     |"
+  puts "      -----+-----+-----"
+  puts "           |     |"
+  puts "        #{brd[7]}  |  #{brd[8]}  |  #{brd[9]}"
+  puts "           |     |"
+  puts ""
+  puts "Scores: #{name}: #{score[:player]} | Computer: #{score[:computer]}"
+  puts ""
+
 end
 # rubocop:enable Metrics/LineLength
 # rubocop:enable Metrics/AbcSize
@@ -52,6 +69,7 @@ def empty_squares(brd)
   brd.keys.select { |num| brd[num] == EMPTY_MARKER }
 end
 
+# rubocop:disable Metrics/AbcSize
 def joinor(array, sign = ',', word = 'or')
   string = ''
   if array.size == 2
@@ -66,6 +84,7 @@ def joinor(array, sign = ',', word = 'or')
     string << word + ' ' + array.last.to_s
   end
 end
+# rubocop:enable Metrics/AbcSize
 
 def player_turn!(brd)
   square = ''
@@ -79,9 +98,37 @@ def player_turn!(brd)
   brd[square] = PLAYER_MARKER
 end
 
+def computer_defensive_move(brd)
+  ai_move = WIN_MOVES.map do |line|
+    if brd.values_at(*line).count(PLAYER_MARKER) == 2
+      brd.select { |k,v| line.include?(k) && v == ' ' }.keys.first
+    end
+  end
+  ai_def_move = ai_move.compact
+  ai_def_move[0]
+end
+
+def computer_offensive_move(brd)
+  ai_move = WIN_MOVES.map do |line|
+    if brd.values_at(*line).count(COMPUTER_MARKER) == 2
+      brd.select { |k,v| line.include?(k) && v == ' ' }.keys.first
+    end
+  end
+  ai_off_move = ai_move.compact
+  ai_off_move[0]
+end
+
 def computer_turn!(brd)
-  square = empty_squares(brd).sample
-  brd[square] = COMPUTER_MARKER
+  if computer_offensive_move(brd) != nil
+    brd[computer_offensive_move(brd)] = COMPUTER_MARKER
+  elsif computer_defensive_move(brd) != nil
+    brd[computer_defensive_move(brd)] = COMPUTER_MARKER
+  elsif brd[5] == EMPTY_MARKER
+    brd[5] = COMPUTER_MARKER
+  else
+    square = empty_squares(brd).sample
+    brd[square] = COMPUTER_MARKER
+  end
 end
 
 def board_full?(brd)
@@ -106,16 +153,17 @@ end
 player_name = ''
 board = ''
 score = { player: 0, computer: 0 }
+
 puts""
 puts""
 puts "             X0X --- TIC TAC TOE Game --- 0X0"
 puts "**********************************************************************"
-puts "Welcome fellows! Now is the time to test your skills with my favourite
-game! TIC TAC TOE! Rules are simple. You are the X and I am the cricles 'O'.
-Try to align three 'X' before I align three 'O'. The first one who wins 5
-games will be considered as the true winner. You can still decide to stop
-before...but you will be considered as a looser for the rest of your life.
-Good luck !"
+puts "  Welcome and thank you for playing TIC-TAC-TOE. Rules are simple. "
+puts "  You are will play with the crossed (X). I will play with the cir-"
+puts "  cles (O). The first one able to align three of his signs will win"
+puts "  the match. However to be a true winner, we need to win 5 matches!"
+puts "  We will randomly start the game. Indeed as I cannot throw a coin,"
+puts "  the algorithm will decide ^_^ ! Enjoy the game."
 puts""
 
 loop do
@@ -129,16 +177,29 @@ loop do
 end
 
 loop do
+  player_choice = ["Computer", "#{player_name}"]
+  first_player = player_choice.sample
+  second_player = player_choice - [first_player]
+  second_player = second_player[0]
   board = initialize_board
-  display_board(board, score, player_name)
+  display_board(board, score, player_name, first_player, second_player)
 
   loop do
-    player_turn!(board)
-    display_board(board, score, player_name)
-    break if check_winner(board, player_name) || board_full?(board)
-    computer_turn!(board)
-    display_board(board, score, player_name)
-    break if check_winner(board, player_name) || board_full?(board)
+    if first_player == player_name
+      player_turn!(board)
+      display_board(board, score, player_name, first_player, second_player)
+      break if check_winner(board, player_name) || board_full?(board)
+      computer_turn!(board)
+      display_board(board, score, player_name, first_player, second_player)
+      break if check_winner(board, player_name) || board_full?(board)
+    elsif first_player == 'Computer'
+      computer_turn!(board)
+      display_board(board, score, player_name, first_player, second_player)
+      break if check_winner(board, player_name) || board_full?(board)
+      player_turn!(board)
+      display_board(board, score, player_name, first_player, second_player)
+      break if check_winner(board, player_name) || board_full?(board)
+    end
   end
 
   if check_winner(board, player_name) == player_name
@@ -147,11 +208,11 @@ loop do
     score[:computer] += 1
   end
 
-  if score[:computer] == 3
+  if score[:computer] == 5
     display_board(board, score, player_name)
     prompt(COMPUTER_WIN_MESSAGES.sample)
     exit
-  elsif score[:player] == 3
+  elsif score[:player] == 5
     display_board(board, score, player_name)
     prompt(COMPUTER_LOST_MESSAGES.sample)
     exit
