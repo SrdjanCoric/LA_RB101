@@ -97,6 +97,7 @@ def player_turn!(brd)
   brd[square] = PLAYER_MARKER
 end
 
+# rubocop:disable Metrics/LineLength
 def computer_defensive_move(brd)
   ai_move = WIN_MOVES.map do |line|
     if brd.values_at(*line).count(PLAYER_MARKER) == 2
@@ -106,7 +107,9 @@ def computer_defensive_move(brd)
   ai_def_move = ai_move.compact
   ai_def_move[0]
 end
+# rubocop:enable Metrics/LineLength
 
+# rubocop:disable Metrics/LineLength
 def computer_offensive_move(brd)
   ai_move = WIN_MOVES.map do |line|
     if brd.values_at(*line).count(COMPUTER_MARKER) == 2
@@ -116,6 +119,7 @@ def computer_offensive_move(brd)
   ai_off_move = ai_move.compact
   ai_off_move[0]
 end
+# rubocop:enable Metrics/LineLength
 
 def computer_turn!(brd)
   if !computer_offensive_move(brd).nil?
@@ -181,7 +185,7 @@ loop do
 end
 
 loop do
-  player_choice = ["Computer", "#{player_name}"]
+  player_choice = ["Computer", player_name]
   first_player = player_choice.sample
   second_player = player_choice - [first_player]
   second_player = second_player[0]
