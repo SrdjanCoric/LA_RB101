@@ -17,7 +17,7 @@ board = { 1=> '0', 2=> '0', 3=> ' ', 4=> 'X', 5=> ' ', 6=> ' ', 7=> ' ', 8=> ' '
 
 def computer_defensive_move(brd)
   ai_move = WIN_MOVES.map do |line|
-    if brd.values_at(*line).count(COMPUTER_MARKER) == 2
+    if brd.values_at(*line).count(PLAYER_MARKER) == 2
       brd.select { |k,v| line.include?(k) && v == EMPTY_MARKER }.keys.first
     end
   end
