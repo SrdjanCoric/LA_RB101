@@ -100,11 +100,9 @@ end
 def computer_defensive_move(brd)
   ai_move = WIN_MOVES.map do |line|
     if brd.values_at(*line).count(PLAYER_MARKER) == 2
-      brd.select do |square, marker| 
+      brd.select do |square, marker|
         line.include?(square) && marker == EMPTY_MARKER
-      end
-        .keys
-        .first
+      end.keys.first
     end
   end
   ai_def_move = ai_move.compact
@@ -114,11 +112,9 @@ end
 def computer_offensive_move(brd)
   ai_move = WIN_MOVES.map do |line|
     if brd.values_at(*line).count(COMPUTER_MARKER) == 2
-      brd.select do |square, marker| 
+      brd.select do |square, marker|
         line.include?(square) && marker == EMPTY_MARKER
-      end
-        .keys
-        .first
+      end.keys.first
     end
   end
   ai_off_move = ai_move.compact
@@ -234,12 +230,13 @@ loop do
 
   if winner?(board, player_name)
     prompt("#{check_winner(board, player_name)} won!")
-    prompt("The score is: #{player_name}: #{score[:player]}, Computer: #{score[:computer]}")
   else
     prompt("It is a tie")
-    prompt("The score is: #{player_name}: #{score[:player]}, Computer: #{score[:computer]}")
   end
-
+  puts ''
+  prompt("Your have #{score[:player]} points")
+  prompt("Computer has #{score[:computer]} points")
+  puts ''
   loop do
     prompt("#{player_name}, do you want to continue?")
     answer = gets.chomp.downcase
