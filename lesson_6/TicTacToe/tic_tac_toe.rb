@@ -88,7 +88,7 @@ def player_turn!(brd)
     prompt("Choose a square from #{joinor(empty_squares(brd), ',', 'or')}")
     answer = gets.chomp
     if answer.to_i.to_s != answer
-      prompt('Please make a valid choice (choose and Integer)')
+      prompt('Please make a valid choice (choose an Integer)')
     else
       square = answer.to_i
       break if empty_squares(brd).include?(square)
