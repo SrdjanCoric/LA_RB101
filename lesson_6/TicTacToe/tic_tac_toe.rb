@@ -20,6 +20,7 @@ WIN_MOVES = [[1, 2, 3], # Horizontal
              [3, 6, 9],
              [1, 5, 9], # Diagonal
              [3, 5, 7]]
+SCORE = 5
 
 def prompt(string)
   puts "=> #{string}"
@@ -68,58 +69,64 @@ def empty_squares(brd)
   brd.keys.select { |num| brd[num] == EMPTY_MARKER }
 end
 
-# rubocop:disable Metrics/AbcSize
 def joinor(array, sign = ',', word = 'or')
   string = ''
   if array.size == 2
-    string << array.shift.to_s + ' ' + word << ' ' + array.shift.to_s
+    string << "#{array.shift} #{word} #{array.shift}"
   elsif array.size == 1
     string << array.last.to_s
   else
     loop do
       break if array.size == 1
-      string << (array.shift.to_s + sign + ' ')
+      string << "#{array.shift} #{sign} "
     end
-    string << word + ' ' + array.last.to_s
+    string << "#{word} #{array.last}"
   end
 end
-# rubocop:enable Metrics/AbcSize
 
 def player_turn!(brd)
-  square = ''
+  square = nil
+  answer = nil
   loop do
-    # prompt("Choose a square from #{empty_squares(brd).join(', ')}")
     prompt("Choose a square from #{joinor(empty_squares(brd), ',', 'or')}")
-    square = gets.chomp.to_i
-    break if empty_squares(brd).include?(square)
-    prompt('Please make a valid choice')
+    answer = gets.chomp
+    if answer.to_i.to_s != answer
+      prompt('Please make a valid choice (choose and Integer)')
+    else
+      square = answer.to_i
+      break if empty_squares(brd).include?(square)
+    end
   end
   brd[square] = PLAYER_MARKER
 end
 
-# rubocop:disable Metrics/LineLength
 def computer_defensive_move(brd)
   ai_move = WIN_MOVES.map do |line|
     if brd.values_at(*line).count(PLAYER_MARKER) == 2
-      brd.select { |square, marker| line.include?(square) && marker == EMPTY_MARKER }.keys.first
+      brd.select do |square, marker| 
+        line.include?(square) && marker == EMPTY_MARKER
+      end
+        .keys
+        .first
     end
   end
   ai_def_move = ai_move.compact
   ai_def_move[0]
 end
-# rubocop:enable Metrics/LineLength
 
-# rubocop:disable Metrics/LineLength
 def computer_offensive_move(brd)
   ai_move = WIN_MOVES.map do |line|
     if brd.values_at(*line).count(COMPUTER_MARKER) == 2
-      brd.select { |square, marker| line.include?(square) && marker == EMPTY_MARKER }.keys.first
+      brd.select do |square, marker| 
+        line.include?(square) && marker == EMPTY_MARKER
+      end
+        .keys
+        .first
     end
   end
   ai_off_move = ai_move.compact
   ai_off_move[0]
 end
-# rubocop:enable Metrics/LineLength
 
 def computer_turn!(brd)
   if !computer_offensive_move(brd).nil?
@@ -135,7 +142,7 @@ def computer_turn!(brd)
 end
 
 def board_full?(brd)
-  brd.values.include?(EMPTY_MARKER) ? false : true
+  !brd.values.include?(EMPTY_MARKER)
 end
 
 def winner?(brd, name)
@@ -218,11 +225,11 @@ loop do
     score[:computer] += 1
   end
 
-  if score[:computer] == 5
+  if score[:computer] == SCORE
     display_board(board, score, player_name)
     prompt(COMPUTER_WIN_MESSAGES.sample)
     exit
-  elsif score[:player] == 5
+  elsif score[:player] == SCORE
     display_board(board, score, player_name)
     prompt(COMPUTER_LOST_MESSAGES.sample)
     exit
