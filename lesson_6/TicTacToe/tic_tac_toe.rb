@@ -1,6 +1,3 @@
-# require 'yaml'
-# MESSAGES = YAML.load_file('ttt.yml')
-
 EMPTY_MARKER = ' '
 PLAYER_MARKER = 'X'
 COMPUTER_MARKER = '0'
@@ -33,7 +30,7 @@ end
 # rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/AbcSize
 def display_board(brd, score, name, player1, player2)
-  system('clear')
+  system('clear') || system('cls')
   puts "***** TIC TAC TOE Playing Board *****"
   puts ""
   puts "   First player is   --> #{player1} "
@@ -237,8 +234,10 @@ loop do
 
   if winner?(board, player_name)
     prompt("#{check_winner(board, player_name)} won!")
+    prompt("The score is: #{player_name}: #{score[:player]}, Computer: #{score[:computer]}")
   else
     prompt("It is a tie")
+    prompt("The score is: #{player_name}: #{score[:player]}, Computer: #{score[:computer]}")
   end
 
   loop do
@@ -248,11 +247,11 @@ loop do
       prompt("Ok! let's go!")
       break
     elsif answer == 'n' || answer == 'no'
-      system('clear')
+      system('clear') || system('cls')
       prompt('Bye bye, thank you for playing!')
       exit
     else
-      system('clear')
+      system('clear') || system('cls')
       prompt("Please enter 'yes' or 'no'.")
     end
   end
